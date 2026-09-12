@@ -1,6 +1,7 @@
+const apiBase = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 const request = async (path, options = {}) => {
   const token = localStorage.getItem('careerflow-token');
-  const response = await fetch(`/api${path}`, { ...options, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers } });
+  const response = await fetch(`${apiBase}/api${path}`, { ...options, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers } });
   const payload = response.status === 204 ? null : await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(payload.message || 'Request failed.'); return payload;
 };
